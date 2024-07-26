@@ -19,8 +19,8 @@ import { Box, Typography } from "@mui/material";
  */
 
 const Histogram = ({ items }) => {
-  // Convert the items object into an array of objects, each containing name and frequency
-  const data = Object.entries(items).map(([name, frequency]) => ({
+  // Map the items array into name and frequency
+  const data = items.map(([name, frequency]) => ({
     name,
     frequency,
   }));
@@ -43,6 +43,6 @@ const Histogram = ({ items }) => {
       </ResponsiveContainer>
     </Box>
   );
-}
+};
 
 export default Histogram;
