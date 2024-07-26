@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Box,
   TextField,
@@ -9,18 +9,32 @@ import {
   TableHead,
   TableRow,
   Paper,
+  Button,
 } from "@mui/material";
+import { binarySearch } from "../algorithms";
 
 /**
  * ItemList component displays a list of items with their frequencies.
  * Includes a search feature to filter items.
  *
+ * Update 7/26/2024: Implemented binary search to improve performance.
+ *
  * Author: Scott Martel
- * Date: 07/17/2024
+ * Date: 07/26/2024
  */
 
 const ItemList = ({ items }) => {
   const [searchTerm, setSearchTerm] = useState("");
+  const [sortedItems, setSortedItems] = useState([]);
+  const [filteredItems, setFilteredItems] = useState([]);
+
+  // Initialize the sortedItems ad filteredItems arrays
+  useEffect(() => {
+    if (items && Array.isArray(items)) {
+      setSortedItems(items);
+      setFilteredItems(items);
+    }
+  }, [items]);
 
   /**
    * Handles the change in the search input field and updates the search value.
@@ -32,13 +46,33 @@ const ItemList = ({ items }) => {
   };
 
   /**
-   * Filters the items based on the search value.
+   * Filters the items based on the search value using binary search.
    *
-   * @param {string} item - The item name.
-   * @returns {boolean} - Returns true if the item matches the search term, otherwise false.
+   * @param {Array} itemsArray - The sorted items array.
+   * @param {string} searchTerm - The search term.
+   * @returns {Array} - Returns the filtered items array.
    */
-  const filterItems = (item) => {
-    return item.toLowerCase().includes(searchTerm.toLowerCase());
+  const filterItems = (itemsArray, searchTerm) => {
+    if (!searchTerm) return itemsArray;
+
+    const index = binarySearch(itemsArray, searchTerm.toLowerCase());
+    return index !== -1 ? [itemsArray[index]] : [];
+  };
+
+  /**
+   * Handles the search button click and updates the filtered items.
+   */
+  const handleSearchClick = () => {
+    const newFilteredItems = filterItems(sortedItems, searchTerm.toLowerCase());
+    setFilteredItems(newFilteredItems);
+  };
+
+  /**
+   * Handles the reset button click and resets the filtered items to the original sorted list.
+   */
+  const handleResetClick = () => {
+    setFilteredItems(sortedItems);
+    setSearchTerm("");
   };
 
   return (
@@ -51,6 +85,26 @@ const ItemList = ({ items }) => {
         onChange={handleSearchChange}
         sx={{ mb: 2, backgroundColor: "#f0f0f0" }} // Change background color here
       />
+      <Box sx={{ display: "flex", gap: 2 }}>
+        <Button
+          variant="contained"
+          onClick={handleSearchClick}
+          sx={{
+            backgroundColor: "#276678",
+            my: 2,
+            "&:hover": { backgroundColor: "#1687A7" },
+          }}
+        >
+          Search
+        </Button>
+        <Button
+          variant="outlined"
+          onClick={handleResetClick}
+          sx={{ color: "#276678", my: 2 }}
+        >
+          Reset
+        </Button>
+      </Box>
       <TableContainer component={Paper}>
         <Table sx={{ minWidth: 650 }} aria-label="simple table">
           <TableHead>
@@ -62,9 +116,8 @@ const ItemList = ({ items }) => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {Object.entries(items)
-              .filter(([item]) => filterItems(item))
-              .map(([item, count], index) => (
+            {Array.isArray(filteredItems) &&
+              filteredItems.map(([item, count], index) => (
                 <TableRow
                   key={item}
                   sx={{
