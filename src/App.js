@@ -3,7 +3,7 @@ import { Container, Typography, Box, Button } from "@mui/material";
 import TextInput from "./components/TextInput";
 import ItemList from "./components/ItemList";
 import Histogram from "./components/Histogram";
-import { mergeSort } from "./algorithms"; // Ensure mergeSort is correctly imported
+import { mergeSort } from "./algorithms";
 
 /**
  * App component serves as the main container for the Text File Processor application.
@@ -25,19 +25,31 @@ const App = () => {
    * Handles the input text processing by splitting it into lines,
    * counting the frequency of each item, sorting the items using merge sort,
    * and updating the state.
+   * 
+   * 7/26/2024 Enhancement Two, implemented merge sort to sort the data allowing the use 
+   * of the binary search algorithm, merge sort has a time complexity of 0(n log n)
    *
    * @param {string} text - The input text containing the list of purchased items.
    */
   const handleTextInput = (text) => {
+    // Split the text input into lines and trims excess whitespace 
     const lines = text.split("\n").map(line => line.trim()).filter(line => line);
+  
+    // Create an object to store the frequency of each item
     const itemMap = {};
-
+  
+    // Count the frequency of each item in the lines array
     lines.forEach((item) => {
       itemMap[item] = (itemMap[item] || 0) + 1;
     });
-
+  
+    // Convert the itemMap object to an array of [item, frequency] pairs
     const itemsArray = Object.entries(itemMap);
+  
+    // Enhancement Two 7/26/2024: Implemented merge sort algorithm to sort the array allowing the use of binary search
     const sortedItems = mergeSort(itemsArray);
+  
+    // Update the state with the sorted items array
     setItems(sortedItems);
   };
 

@@ -1,13 +1,25 @@
 /**
  * Algoritms used in the text-record-processor application.
  * Includes merge sort, and binary search.
+ * 
+ * This file contains the algorithms used to complete Enhancement Two.
+ * 
+ * Update 7/27/2024: Improved comments describing the algorithms
+ * 
+ * The merge sort algorithm sorts an array with a time complexity of O(n log n),
+ * Binary search is then used on the sorted data with a time complexity O(log n) which is a significant
+ * improvement compared to the previous linear search which had a time complexity of 0(n).
  *
  * Author: Scott Martel
- * Date: 07/25/2024
+ * Date: 07/27/2024
  */
 
 /**
  * Performs merge sort on an array of items.
+ * 
+ * Time Complexity: O(n log n)
+ * 
+ * Enhancement 7/27/2024: Improved comments
  *
  * @param {Array} arr - The array to be sorted.
  * @returns {Array} - The sorted array.
@@ -33,33 +45,52 @@ export const mergeSort = (arr) => {
 
 /**
  * Merges two sorted arrays into one sorted array.
+ * 
+ * Time Complexity: O(n)
+ * 
+ * Enhancement 7/27/2024: Improved comments
  *
  * @param {Array} left - The left sorted array.
  * @param {Array} right - The right sorted array.
  * @returns {Array} - The merged sorted array.
  */
 const merge = (left, right) => {
+  // Initialize an empty array to hold the merged result
   let result = [];
+  // Initialize pointers to track the current index of the left and right arrays
   let leftIndex = 0;
   let rightIndex = 0;
 
   // Compare the elements of the two arrays one by one and merge them in sorted order
   while (leftIndex < left.length && rightIndex < right.length) {
+    // Compare the current elements of both arrays and push the smaller element to the result array
     if (left[leftIndex][0] < right[rightIndex][0]) {
-      result.push(left[leftIndex]);
-      leftIndex++;
+      result.push(left[leftIndex]); // Push the element from the left array to the result array
+      leftIndex++; // Move the pointer of the left array to the next element
     } else {
-      result.push(right[rightIndex]);
-      rightIndex++;
+      result.push(right[rightIndex]); // Push the element from the right array to the result array
+      rightIndex++; // Move the pointer of the right array to the next element
     }
   }
 
-  // Concatenate any remaining elements from the left and right arrays
-  return result.concat(left.slice(leftIndex)).concat(right.slice(rightIndex));
+  // Concatenate any remaining elements from the left array to the result array
+  // This takes care of the case where the left array has leftover elements
+  result = result.concat(left.slice(leftIndex));
+
+  // Concatenate any remaining elements from the right array to the result array
+  // This handles takes care of the case where the right array has leftover elements
+  result = result.concat(right.slice(rightIndex));
+
+  // Return the merged and sorted result array
+  return result;
 };
 
 /**
  * Performs binary search on a sorted array to find the item.
+ * 
+ * Time Complexity: O(log n)
+ * 
+ * Enhancement 7/27/2024: Improved comments
  *
  * @param {Array} arr - The sorted array.
  * @param {string} target - The target item to search for.
