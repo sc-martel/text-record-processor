@@ -1,5 +1,5 @@
 /**
- * Algoritms used in the text-record-processor application.
+ * Algorithms used in the text-record-processor application.
  * Includes merge sort, and binary search.
  * 
  * This file contains the algorithms used to complete Enhancement Two.
