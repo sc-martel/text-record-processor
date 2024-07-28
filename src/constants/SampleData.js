@@ -1,5 +1,9 @@
 /**
  * A list of sample product data for the user to use to quickly see the functionality of the application.
+ * 
+ * Author: Scott Martel
+ * Date: 7/19/2024
+ * 
  */
 export const SAMPLE_DATA = `Spinach
 Radishes

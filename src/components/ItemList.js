@@ -17,7 +17,8 @@ import { binarySearch } from "../algorithms";
  * ItemList component displays a list of items with their frequencies.
  * Includes a search feature to filter items.
  *
- * Update 7/26/2024: Implemented binary search to improve performance.
+ * Update 7/26/2024: Implemented binary search with time complexity O(log n) 
+ * to improve performance from existing linear search with time complexity of O(n).
  *
  * Author: Scott Martel
  * Date: 07/26/2024
@@ -30,6 +31,7 @@ const ItemList = ({ items }) => {
 
   // Initialize the sortedItems ad filteredItems arrays
   useEffect(() => {
+    // If not empty or undefined, initialize the values of sorted and filtered items with items
     if (items && Array.isArray(items)) {
       setSortedItems(items);
       setFilteredItems(items);
@@ -47,6 +49,9 @@ const ItemList = ({ items }) => {
 
   /**
    * Filters the items based on the search value using binary search.
+   * 
+   * 7/26/2024 Enhancement Two: implemented binary search improving time complexity
+   * from linear O(n) to binar search O(log n)
    *
    * @param {Array} itemsArray - The sorted items array.
    * @param {string} searchTerm - The search term.
@@ -55,6 +60,7 @@ const ItemList = ({ items }) => {
   const filterItems = (itemsArray, searchTerm) => {
     if (!searchTerm) return itemsArray;
 
+    // Enhancement Two: switched from linear to binary search
     const index = binarySearch(itemsArray, searchTerm.toLowerCase());
     return index !== -1 ? [itemsArray[index]] : [];
   };
@@ -83,7 +89,7 @@ const ItemList = ({ items }) => {
         fullWidth
         value={searchTerm}
         onChange={handleSearchChange}
-        sx={{ mb: 2, backgroundColor: "#f0f0f0" }} // Change background color here
+        sx={{ mb: 2, backgroundColor: "#f0f0f0" }}
       />
       <Box sx={{ display: "flex", gap: 2 }}>
         <Button
