@@ -17,21 +17,22 @@ import { binarySearch } from "../algorithms";
  * ItemList component displays a list of items with their frequencies.
  * Includes a search feature to filter items.
  *
- * Update 7/26/2024: Implemented binary search with time complexity O(log n) 
+ * Update 7/26/2024: Implemented binary search with time complexity O(log n)
  * to improve performance from existing linear search with time complexity of O(n).
+ * 
+ * Update 08/02/2024 Enhancement Three: Implement loading saved data from Google Firestore database.
  *
  * Author: Scott Martel
  * Date: 07/26/2024
  */
 
-const ItemList = ({ items }) => {
+const ItemList = ({ items, loadItemsFromFirestore }) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [sortedItems, setSortedItems] = useState([]);
   const [filteredItems, setFilteredItems] = useState([]);
 
-  // Initialize the sortedItems ad filteredItems arrays
+  // Initialize the sortedItems and filteredItems arrays
   useEffect(() => {
-    // If not empty or undefined, initialize the values of sorted and filtered items with items
     if (items && Array.isArray(items)) {
       setSortedItems(items);
       setFilteredItems(items);
@@ -49,9 +50,9 @@ const ItemList = ({ items }) => {
 
   /**
    * Filters the items based on the search value using binary search.
-   * 
+   *
    * 7/26/2024 Enhancement Two: implemented binary search improving time complexity
-   * from linear O(n) to binar search O(log n)
+   * from linear O(n) to binary search O(log n)
    *
    * @param {Array} itemsArray - The sorted items array.
    * @param {string} searchTerm - The search term.
@@ -109,6 +110,18 @@ const ItemList = ({ items }) => {
           sx={{ color: "#276678", my: 2 }}
         >
           Reset
+        </Button>
+        {/* Enhancement Three: Button to load items from Firestore */}
+        <Button
+          variant="contained"
+          onClick={loadItemsFromFirestore}
+          sx={{
+            backgroundColor: "#276678",
+            my: 2,
+            "&:hover": { backgroundColor: "#1687A7" },
+          }}
+        >
+          Load from Firestore
         </Button>
       </Box>
       <TableContainer component={Paper}>
